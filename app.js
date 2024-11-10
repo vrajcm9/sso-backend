@@ -16,7 +16,9 @@ app.use(express.static(path.resolve(__dirname, '../client/build')));
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://192.168.56.1:3000'], // Update this with the origin of your frontend application
+  origin: ['http://localhost:3000', 'http://192.168.56.1:3000', 
+    'https://requestmanagement.netlify.app'
+  ], // Update this with the origin of your frontend application
   credentials: true // Allow credentials to be included in requests
 }));
 

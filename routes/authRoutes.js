@@ -8,7 +8,7 @@ const User = require('../models/userModel');
 router.get('/auth/google', (req, res) => {
     const rootUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
     const options = {
-      redirect_uri: 'http://localhost:4000/api/auth/google/callback',
+      redirect_uri: process.env.BACKEND_URL+'/api/auth/google/callback',
       client_id: process.env.GOOGLE_CLIENT_ID,
       access_type: 'offline',
       response_type: 'code',
@@ -35,7 +35,7 @@ router.get('/auth/google/callback', async (req, res) => {
             data: {
                 client_id: process.env.GOOGLE_CLIENT_ID,
                 client_secret: process.env.GOOGLE_CLIENT_SECRET,
-                redirect_uri: 'http://localhost:4000/api/auth/google/callback',
+                redirect_uri: process.env.BACKEND_URL+'/api/auth/google/callback',
                 grant_type: 'authorization_code',
                 code,
             }
@@ -63,7 +63,7 @@ router.get('/auth/google/callback', async (req, res) => {
             }).save();
         }
         // Redirect back to the frontend with the user info and token
-        res.redirect(`http://localhost:3000?token=${tokenResponse.data.id_token}&userId=${(user.id)}`);
+        res.redirect(`${process.env.FRONTEND_URL}?token=${tokenResponse.data.id_token}&userId=${(user.id)}`);
     } catch (error) {
         console.error('Error during callback:', error);
         res.redirect('/'); // Handle error scenario
@@ -71,7 +71,7 @@ router.get('/auth/google/callback', async (req, res) => {
 });
 
 router.get('/auth/logout', (req, res) => {
-    res.redirect('http://localhost:3000');
+    res.redirect(process.env.FRONTEND_URL);
 });
 
 router.get('/user', async (req, res) => {
